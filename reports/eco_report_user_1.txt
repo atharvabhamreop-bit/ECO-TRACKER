@@ -1,0 +1,12 @@
+====================================
+          ECO TRACKER REPORT
+====================================
+
+User Name: Atharva
+Total Eco Points: 115
+Total Activities: 10
+Total CO2 Saved: 28.0 kg
+
+====================================
+Report generated successfully.
+====================================

@@ -1,0 +1,20 @@
+# React / Node
+frontend/node_modules/
+frontend/dist/
+
+# Java compiled files
+src/*.class
+
+# Reports generated locally
+reports/*.txt
+
+# IDE files
+.vscode/
+
+# Environment files
+.env
+.env.local
+
+# OS files
+Thumbs.db
+.DS_Store
