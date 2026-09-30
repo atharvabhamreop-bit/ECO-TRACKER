@@ -10,4 +10,5 @@ interface UserRepo extends JpaRepository<User, Long> {
 
 interface ActivityRepo extends JpaRepository<Activity, Long> {
     List<Activity> findByUserIdOrderByDateDescIdDesc(Long userId);
+    void deleteByUserId(Long userId);
 }

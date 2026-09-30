@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.transaction.annotation.Transactional;
 
 @RestController @RequestMapping("/api") @CrossOrigin
 public class ApiController {
@@ -108,4 +109,15 @@ public class ApiController {
     }
 
     private static double round(double v) { return Math.round(v * 100.0) / 100.0; }
+
+    @DeleteMapping("/users/{id}/activities")
+    @Transactional
+    Map<String, Object> reset(@PathVariable Long id) {
+        User u = users.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such user"));
+        acts.deleteByUserId(id);
+        u.totalPoints = 0;
+        u.totalCo2Saved = 0;
+        users.save(u);
+        return Map.of("ok", true);
+    }
 }

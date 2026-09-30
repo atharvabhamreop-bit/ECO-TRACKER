@@ -64,6 +64,16 @@ function Dashboard({ user }) {
   useEffect(() => { call("/config").then(setCfg); load(); }, []);
   const add = async (name) => { await call("/activities", { userId: user.id, activityName: name }); load(); };
   if (!d || !cfg) return <p>Loading…</p>;
+const reset = async () => {
+  if (!confirm("Delete all your activity history and reset your points?")) return;
+  try {
+    const r = await fetch(`${API}/users/${user.id}/activities`, { method: "DELETE" });
+    if (!r.ok) throw new Error("Server returned " + r.status);
+    await load();
+  } catch (e) {
+    alert("Reset failed: " + e.message);
+  }
+}
   const pts = d.user.totalPoints;
   const next = Object.entries(cfg.badges).find(([, n]) => n > pts);
   const co2 = d.co2Total ?? 0;
@@ -96,7 +106,6 @@ function Dashboard({ user }) {
           <button key={name} onClick={() => add(name)}>
             <span>{name}</span>
             <b>+{p}</b>
-            {cfg.co2 && <small>saves {cfg.co2[name]} kg CO₂</small>}
           </button>
         ))}
       </div>
@@ -128,6 +137,7 @@ function Dashboard({ user }) {
           </li>
         ))}
       </ul>
+      <button onClick={reset}>Reset history</button>
     </>
   );
 }
