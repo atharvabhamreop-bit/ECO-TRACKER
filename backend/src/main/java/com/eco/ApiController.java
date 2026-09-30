@@ -9,8 +9,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RestController @RequestMapping("/api") @CrossOrigin
 public class ApiController {
-    // Edit points and badge thresholds here
+    // Edit points, CO2 (kg) and badge thresholds here
     static final Map<String, Integer> POINTS = new LinkedHashMap<>();
+    static final Map<String, Double> CO2 = new LinkedHashMap<>();
     static final Map<String, Integer> BADGES = new LinkedHashMap<>();
     static {
         POINTS.put("Walking/Cycling", 15);
@@ -19,6 +20,15 @@ public class ApiController {
         POINTS.put("Avoiding Single-use Plastic", 5);
         POINTS.put("Saving Electricity", 10);
         POINTS.put("Planting a Tree", 25);
+
+        // Placeholder estimates in kg CO2 - replace with cited values (DEFRA / EPA / CEA India)
+        CO2.put("Walking/Cycling", 2.6);
+        CO2.put("Using Public Transport", 1.5);
+        CO2.put("Recycling Waste", 1.0);
+        CO2.put("Avoiding Single-use Plastic", 0.1);
+        CO2.put("Saving Electricity", 0.8);
+        CO2.put("Planting a Tree", 21.0);
+
         BADGES.put("Green Starter", 50);
         BADGES.put("Eco Explorer", 100);
         BADGES.put("Eco Champion", 250);
@@ -37,6 +47,7 @@ public class ApiController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already registered");
         u.password = enc.encode(u.password);
         u.totalPoints = 0;
+        u.totalCo2Saved = 0;
         return users.save(u);
     }
 
@@ -47,7 +58,9 @@ public class ApiController {
     }
 
     @GetMapping("/config")
-    Map<String, Object> config() { return Map.of("activities", POINTS, "badges", BADGES); }
+    Map<String, Object> config() {
+        return Map.of("activities", POINTS, "co2", CO2, "badges", BADGES);
+    }
 
     @PostMapping("/activities")
     Activity add(@RequestBody Activity a) {
@@ -55,8 +68,10 @@ public class ApiController {
         if (p == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Unknown activity");
         User u = users.findById(a.userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such user"));
         a.points = p;
+        a.co2Saved = CO2.get(a.activityName);
         a.date = LocalDate.now();
         u.totalPoints += p;
+        u.totalCo2Saved += a.co2Saved;
         users.save(u);
         return acts.save(a);
     }
@@ -73,6 +88,10 @@ public class ApiController {
         m.put("today", sum(list, t));
         m.put("week", sum(list, t.minusDays(6)));
         m.put("month", sum(list, t.minusDays(29)));
+        m.put("co2Total", round(u.totalCo2Saved));
+        m.put("co2Today", round(co2Sum(list, t)));
+        m.put("co2Week", round(co2Sum(list, t.minusDays(6))));
+        m.put("co2Month", round(co2Sum(list, t.minusDays(29))));
         m.put("recent", list.stream().limit(10).toList());
         return m;
     }
@@ -83,4 +102,10 @@ public class ApiController {
     private static int sum(List<Activity> l, LocalDate from) {
         return l.stream().filter(a -> !a.date.isBefore(from)).mapToInt(a -> a.points).sum();
     }
+
+    private static double co2Sum(List<Activity> l, LocalDate from) {
+        return l.stream().filter(a -> !a.date.isBefore(from)).mapToDouble(a -> a.co2Saved).sum();
+    }
+
+    private static double round(double v) { return Math.round(v * 100.0) / 100.0; }
 }

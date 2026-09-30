@@ -9,5 +9,6 @@ public class Activity {
     public Long userId;
     public String activityName;
     public int points;
+    public double co2Saved;   // NEW: kg of CO2 saved by this activity
     @Column(name = "activity_date") public LocalDate date;
 }

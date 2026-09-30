@@ -10,4 +10,5 @@ public class User {
     @Column(unique = true) public String email;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) public String password;
     public int totalPoints;
+    public double totalCo2Saved;   // NEW: running total of kg CO2 saved
 }
