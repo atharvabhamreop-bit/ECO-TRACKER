@@ -66,6 +66,8 @@ function Dashboard({ user }) {
   if (!d || !cfg) return <p>Loading…</p>;
   const pts = d.user.totalPoints;
   const next = Object.entries(cfg.badges).find(([, n]) => n > pts);
+  const co2 = d.co2Total ?? 0;
+  const TREE_KG_PER_YEAR = 21; // placeholder, replace with a cited value
   return (
     <>
       <section className="hero">
@@ -78,10 +80,24 @@ function Dashboard({ user }) {
         ) : <p>You've earned every badge.</p>}
       </section>
 
+      {/* NEW: environmental impact */}
+      <h2>Your impact</h2>
+      <div className="stats">
+        <div><b>{co2}</b>kg CO₂ saved (total)</div>
+        <div><b>{d.co2Today ?? 0}</b>kg today</div>
+        <div><b>{d.co2Week ?? 0}</b>kg last 7 days</div>
+        <div><b>{d.co2Month ?? 0}</b>kg last 30 days</div>
+      </div>
+      <p>🌳 About the same as {(co2 / TREE_KG_PER_YEAR).toFixed(1)} trees absorbing CO₂ for a year</p>
+
       <h2>Log an activity</h2>
       <div className="tiles">
         {Object.entries(cfg.activities).map(([name, p]) => (
-          <button key={name} onClick={() => add(name)}><span>{name}</span><b>+{p}</b></button>
+          <button key={name} onClick={() => add(name)}>
+            <span>{name}</span>
+            <b>+{p}</b>
+            {cfg.co2 && <small>saves {cfg.co2[name]} kg CO₂</small>}
+          </button>
         ))}
       </div>
 
@@ -102,7 +118,16 @@ function Dashboard({ user }) {
 
       <h2>Recent activity</h2>
       {d.recent.length === 0 && <p>Nothing logged yet. Tap an activity above to start.</p>}
-      <ul>{d.recent.map((a) => <li key={a.id}><span>{a.activityName}</span><span>{a.date}</span><b>+{a.points}</b></li>)}</ul>
+      <ul>
+        {d.recent.map((a) => (
+          <li key={a.id}>
+            <span>{a.activityName}</span>
+            <span>{a.date}</span>
+            <span>{a.co2Saved ?? 0} kg CO₂</span>
+            <b>+{a.points}</b>
+          </li>
+        ))}
+      </ul>
     </>
   );
 }
