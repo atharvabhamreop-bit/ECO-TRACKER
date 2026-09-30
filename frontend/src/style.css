@@ -1,0 +1,24 @@
+:root { --ink: #1c2b22; --paper: #f6f7f2; --moss: #3f7d4e; --line: #d9ddd0; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: "Bricolage Grotesque", system-ui, sans-serif; background: var(--paper); color: var(--ink); }
+nav { display: flex; align-items: center; gap: 12px; padding: 12px 24px; border-bottom: 1px solid var(--line); }
+.grow { flex: 1; }
+main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+button { font: inherit; cursor: pointer; border: 1px solid var(--line); background: #fff; color: var(--ink); padding: 8px 14px; border-radius: 6px; }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--moss); outline-offset: 2px; }
+nav button { border: 0; background: none; } nav .on { font-weight: 800; text-decoration: underline; }
+h2 { margin: 32px 0 12px; font-size: 1.1rem; }
+.hero { padding: 16px 0; } .big { font-size: 4.5rem; font-weight: 800; line-height: 1; } .big small { font-size: 1.2rem; font-weight: 400; }
+.bar { height: 10px; background: var(--line); border-radius: 5px; margin-top: 16px; } .bar i { display: block; height: 100%; background: var(--moss); border-radius: 5px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+.tiles button { display: flex; justify-content: space-between; align-items: center; padding: 16px; text-align: left; }
+.tiles button:hover { border-color: var(--moss); } .tiles b { color: var(--moss); }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; }
+.stats div { border: 1px solid var(--line); padding: 12px; border-radius: 6px; } .stats b { display: block; font-size: 1.8rem; }
+.badges { display: flex; flex-wrap: wrap; gap: 8px; } .badges span { padding: 6px 12px; border: 1px dashed var(--line); border-radius: 20px; opacity: .55; }
+.badges .got { background: var(--moss); color: #fff; border-style: solid; opacity: 1; }
+ul { list-style: none; padding: 0; margin: 0; } li { display: flex; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--line); } li span:first-child { flex: 1; } li b { color: var(--moss); }
+li.me { font-weight: 800; }
+.auth { max-width: 340px; margin: 12vh auto; display: grid; gap: 12px; padding: 0 16px; }
+input { font: inherit; padding: 10px; border: 1px solid var(--line); border-radius: 6px; }
+.primary { background: var(--moss); color: #fff; border: 0; } .err { color: #a3321f; margin: 0; } a { cursor: pointer; text-decoration: underline; font-size: .9rem; }
