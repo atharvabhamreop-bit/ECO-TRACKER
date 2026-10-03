@@ -110,7 +110,7 @@ public class ApiController {
 
     private static double round(double v) { return Math.round(v * 100.0) / 100.0; }
 
-    @DeleteMapping("/users/{id}/activities")
+    @PostMapping("/users/{id}/reset")
     @Transactional
     Map<String, Object> reset(@PathVariable Long id) {
         User u = users.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such user"));

@@ -67,7 +67,7 @@ function Dashboard({ user }) {
 const reset = async () => {
   if (!confirm("Delete all your activity history and reset your points?")) return;
   try {
-    const r = await fetch(`${API}/users/${user.id}/activities`, { method: "DELETE" });
+    const r = await fetch(`${API}/users/${user.id}/reset`, { method: "POST" });
     if (!r.ok) throw new Error("Server returned " + r.status);
     await load();
   } catch (e) {
