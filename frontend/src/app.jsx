@@ -1,7 +1,7 @@
 import React,{useState,useEffect,useContext,createContext}from"react";
 import{createRoot}from"react-dom/client";
 import{BrowserRouter,useNavigate,useLocation,Routes,Route,Link,Navigate}from"react-router-dom";
-import"./style.css";
+import"./App.css";
 
 /* ---------- Backend connection ---------- */
 // Change the port here, or set VITE_API_URL in frontend/.env
