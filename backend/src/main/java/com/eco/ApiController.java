@@ -15,12 +15,12 @@ public class ApiController {
     static final Map<String, Double> CO2 = new LinkedHashMap<>();
     static final Map<String, Integer> BADGES = new LinkedHashMap<>();
     static {
-        POINTS.put("Walking/Cycling", 15);
-        POINTS.put("Using Public Transport", 10);
+        POINTS.put("Walking/Cycling", 25);
+        POINTS.put("Using Public Transport", 15);
         POINTS.put("Recycling Waste", 10);
         POINTS.put("Avoiding Single-use Plastic", 5);
         POINTS.put("Saving Electricity", 10);
-        POINTS.put("Planting a Tree", 25);
+        POINTS.put("Planting a Tree", 30);
 
         // Placeholder estimates in kg CO2 - replace with cited values (DEFRA / EPA / CEA India)
         CO2.put("Walking/Cycling", 2.6);
